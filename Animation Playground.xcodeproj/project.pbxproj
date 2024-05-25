@@ -9,18 +9,21 @@
 /* Begin PBXBuildFile section */
 		22E51E442C0291550099F02F /* Animation_PlaygroundApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E51E432C0291550099F02F /* Animation_PlaygroundApp.swift */; };
 		22E51E462C0291550099F02F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E51E452C0291550099F02F /* ContentView.swift */; };
-		22E51E482C0291550099F02F /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E51E472C0291550099F02F /* Item.swift */; };
+		22E51E482C0291550099F02F /* DBAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E51E472C0291550099F02F /* DBAnimation.swift */; };
 		22E51E4A2C0291570099F02F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 22E51E492C0291570099F02F /* Assets.xcassets */; };
 		22E51E4D2C0291570099F02F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 22E51E4C2C0291570099F02F /* Preview Assets.xcassets */; };
+		22E51E562C0296AC0099F02F /* AnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E51E552C0296AC0099F02F /* AnimationView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		22E51E402C0291550099F02F /* Animation Playground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Animation Playground.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		22E51E432C0291550099F02F /* Animation_PlaygroundApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animation_PlaygroundApp.swift; sourceTree = "<group>"; };
 		22E51E452C0291550099F02F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		22E51E472C0291550099F02F /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		22E51E472C0291550099F02F /* DBAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBAnimation.swift; sourceTree = "<group>"; };
 		22E51E492C0291570099F02F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		22E51E4C2C0291570099F02F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		22E51E552C0296AC0099F02F /* AnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationView.swift; sourceTree = "<group>"; };
+		22E51E572C029AAF0099F02F /* Animation Playground.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Animation Playground.entitlements"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,9 +56,11 @@
 		22E51E422C0291550099F02F /* Animation Playground */ = {
 			isa = PBXGroup;
 			children = (
+				22E51E572C029AAF0099F02F /* Animation Playground.entitlements */,
 				22E51E432C0291550099F02F /* Animation_PlaygroundApp.swift */,
 				22E51E452C0291550099F02F /* ContentView.swift */,
-				22E51E472C0291550099F02F /* Item.swift */,
+				22E51E552C0296AC0099F02F /* AnimationView.swift */,
+				22E51E472C0291550099F02F /* DBAnimation.swift */,
 				22E51E492C0291570099F02F /* Assets.xcassets */,
 				22E51E4B2C0291570099F02F /* Preview Content */,
 			);
@@ -141,7 +146,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				22E51E462C0291550099F02F /* ContentView.swift in Sources */,
-				22E51E482C0291550099F02F /* Item.swift in Sources */,
+				22E51E562C0296AC0099F02F /* AnimationView.swift in Sources */,
+				22E51E482C0291550099F02F /* DBAnimation.swift in Sources */,
 				22E51E442C0291550099F02F /* Animation_PlaygroundApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -273,12 +279,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Animation Playground/Animation Playground.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Animation Playground/Preview Content\"";
 				DEVELOPMENT_TEAM = L7JQRVXU2V;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Animate;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -291,6 +299,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Mcrich.Animation-Playground";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -302,12 +313,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Animation Playground/Animation Playground.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Animation Playground/Preview Content\"";
 				DEVELOPMENT_TEAM = L7JQRVXU2V;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Animate;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -320,6 +333,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Mcrich.Animation-Playground";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
