@@ -12,6 +12,7 @@ struct AnimationView: View {
     let animation: Animation
     @State var isShowing = false
     @State var isEditingPresentedText = false
+    @State var isJustEditingPresentedText = false
     @FocusState var isEditingPresentedTextKeyboard
     @FocusState var isAdjustingSpeed
     
@@ -41,34 +42,46 @@ struct AnimationView: View {
         return animation.speed(speed)
     }
     
+    func toggleIsEditingPresentedText() {
+        if isEditingPresentedText || isJustEditingPresentedText {
+            isEditingPresentedTextKeyboard = false
+            if dbAnimation.presentedText.isEmpty {
+                dbAnimation.presentedText = "Your Content via \(dbAnimation.title)"
+            }
+            withAnimation(runAnimation) {
+                isEditingPresentedText = false
+                isJustEditingPresentedText = false
+            }
+        } else {
+            withAnimation(runAnimation) {
+                #if os(macOS)
+                isJustEditingPresentedText = true
+                #else
+                isEditingPresentedText = true
+                #endif
+                isEditingPresentedTextKeyboard = true
+            }
+        }
+    }
+    
     var body: some View {
         List {
             Section {
                 if isShowing {
                     HStack {
-                        if isEditingPresentedText {
+                        if isEditingPresentedText || isJustEditingPresentedText {
                             TextField("", text: $dbAnimation.presentedText, prompt: Text("Presented Text"))
                                 .focused($isEditingPresentedTextKeyboard)
+                                .onSubmit {
+                                    toggleIsEditingPresentedText()
+                                }
                         } else {
                             Text(dbAnimation.presentedText)
                         }
                         Button {
-                            if isEditingPresentedText {
-                                isEditingPresentedTextKeyboard = false
-                                if dbAnimation.presentedText.isEmpty {
-                                    dbAnimation.presentedText = "Your Content via \(dbAnimation.title)"
-                                }
-                                withAnimation(runAnimation) {
-                                    isEditingPresentedText = false
-                                }
-                            } else {
-                                withAnimation(runAnimation) {
-                                    isEditingPresentedText = true
-                                    isEditingPresentedTextKeyboard = true
-                                }
-                            }
+                            toggleIsEditingPresentedText()
                         } label: {
-                            Image(systemName: isEditingPresentedText ? "checkmark" : "pencil")
+                            Image(systemName: (isEditingPresentedText || isJustEditingPresentedText) ? "checkmark" : "pencil")
                         }
                         
                     }
@@ -126,6 +139,7 @@ struct AnimationView: View {
                         isAdjustingSpeed = false
                         withAnimation(runAnimation) {
                             isEditingPresentedText = false
+                            isJustEditingPresentedText = false
                         }
                     }
                 }
@@ -150,8 +164,9 @@ import SwiftUI
 struct ContentView: View {
     let animation: Animation = .\(dbAnimation.animation)
     @State var isShowing = false
-    @State var presentedText = "Your Content via \(dbAnimation.title)"
+    @State var presentedText = "\(dbAnimation.presentedText)"
     @State var isEditingPresentedText = false
+    @State var isJustEditingPresentedText = false
     @FocusState var isEditingPresentedTextKeyboard
     @FocusState var isAdjustingSpeed
     @State var speed: Double?
@@ -181,35 +196,47 @@ struct ContentView: View {
         
         return animation.speed(speed)
     }
+
+    func toggleIsEditingPresentedText() {
+        if isEditingPresentedText || isJustEditingPresentedText {
+            isEditingPresentedTextKeyboard = false
+            if presentedText.isEmpty {
+                presentedText = "Your Content via \(dbAnimation.title)"
+            }
+            withAnimation(runAnimation) {
+                isEditingPresentedText = false
+                isJustEditingPresentedText = false
+            }
+        } else {
+            withAnimation(runAnimation) {
+                #if os(macOS)
+                isJustEditingPresentedText = true
+                #else
+                isEditingPresentedText = true
+                #endif
+                isEditingPresentedTextKeyboard = true
+            }
+        }
+    }
     
     var body: some View {
         List {
             Section {
                 if isShowing {
                     HStack {
-                        if isEditingPresentedText {
+                        if isEditingPresentedText || isJustEditingPresentedText {
                             TextField("", text: $presentedText, prompt: Text("Presented Text"))
                                 .focused($isEditingPresentedTextKeyboard)
+                                .onSubmit {
+                                    toggleIsEditingPresentedText()
+                                }
                         } else {
                             Text(presentedText)
                         }
                         Button {
-                            if isEditingPresentedText {
-                                isEditingPresentedTextKeyboard = false
-                                if presentedText.isEmpty {
-                                    presentedText = "Your Content via \(dbAnimation.title)"
-                                }
-                                withAnimation(runAnimation) {
-                                    isEditingPresentedText = false
-                                }
-                            } else {
-                                withAnimation(runAnimation) {
-                                    isEditingPresentedText = true
-                                    isEditingPresentedTextKeyboard = true
-                                }
-                            }
+                            toggleIsEditingPresentedText()
                         } label: {
-                            Image(systemName: isEditingPresentedText ? "checkmark" : "pencil")
+                            Image(systemName: (isEditingPresentedText || isJustEditingPresentedText) ? "checkmark" : "pencil")
                         }
                         
                     }
@@ -246,6 +273,7 @@ struct ContentView: View {
                         isAdjustingSpeed = false
                         withAnimation(runAnimation) {
                             isEditingPresentedText = false
+                            isJustEditingPresentedText = false
                         }
                     }
                 }
