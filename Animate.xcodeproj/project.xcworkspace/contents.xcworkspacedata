@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:">
+      location = "self:/Users/mcrich/Xcode/World Records/Animation Playground/Animate.xcodeproj">
    </FileRef>
 </Workspace>
