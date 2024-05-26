@@ -16,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		223ACF592C02B988001513EC /* Animate-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Animate-Info.plist"; sourceTree = "<group>"; };
 		22E51E402C0291550099F02F /* Animate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Animate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		22E51E432C0291550099F02F /* Animation_PlaygroundApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animation_PlaygroundApp.swift; sourceTree = "<group>"; };
 		22E51E452C0291550099F02F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -40,6 +41,7 @@
 		22E51E372C0291550099F02F = {
 			isa = PBXGroup;
 			children = (
+				223ACF592C02B988001513EC /* Animate-Info.plist */,
 				22E51E422C0291550099F02F /* Animation Playground */,
 				22E51E412C0291550099F02F /* Products */,
 			);
@@ -286,6 +288,7 @@
 				DEVELOPMENT_TEAM = L7JQRVXU2V;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Animate-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Animate;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -323,6 +326,7 @@
 				DEVELOPMENT_TEAM = L7JQRVXU2V;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Animate-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Animate;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
