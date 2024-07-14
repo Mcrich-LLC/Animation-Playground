@@ -125,17 +125,19 @@ struct AnimationView: View {
                         if isShowing {
                             Divider()
                         }
-                        Button {
-                            isAdjustingSpeed = false
-                            isEditingPresentedTextKeyboard = false
-                            withAnimation(runAnimation) {
-                                isShowing.toggle()
+                        HStack {
+                            Button {
+                                isAdjustingSpeed = false
+                                isEditingPresentedTextKeyboard = false
+                                withAnimation(runAnimation) {
+                                    isShowing.toggle()
+                                }
+                            } label: {
+                                Text("Try Animation")
                             }
-                        } label: {
-                            Text("Try Animation")
+                            .buttonBorderShape(.roundedRectangle)
                             Spacer()
                         }
-                        .buttonBorderShape(.roundedRectangle)
                         Divider()
                         
                         HStack {
@@ -351,17 +353,19 @@ struct ContentView: View {
                             if isShowing {
                                 Divider()
                             }
-                            Button {
-                                isAdjustingSpeed = false
-                                isEditingPresentedTextKeyboard = false
-                                withAnimation(runAnimation) {
-                                    isShowing.toggle()
+                            HStack {
+                                Button {
+                                    isAdjustingSpeed = false
+                                    isEditingPresentedTextKeyboard = false
+                                    withAnimation(runAnimation) {
+                                        isShowing.toggle()
+                                    }
+                                } label: {
+                                    Text("Try Animation")
                                 }
-                            } label: {
-                                Text("Try Animation")
+                                .buttonBorderShape(.roundedRectangle)
                                 Spacer()
                             }
-                            .buttonBorderShape(.roundedRectangle)
                             Divider()
                             
                             HStack {
