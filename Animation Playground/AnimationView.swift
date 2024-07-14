@@ -24,7 +24,7 @@ struct AnimationView: View {
                 return ""
             }
         } set: { newValue in
-            guard !newValue.isEmpty, let double = Double(newValue) else {
+            guard !newValue.isEmpty, let double = Double(newValue), double != 0 else {
                 dbAnimation.speed = nil
                 return
             }
@@ -65,71 +65,102 @@ struct AnimationView: View {
     }
     
     var body: some View {
-        List {
-            Section {
-                if isShowing {
-                    HStack {
-                        if isEditingPresentedText || isJustEditingPresentedText {
-                            TextField("", text: $dbAnimation.presentedText, prompt: Text("Presented Text"))
-                                .focused($isEditingPresentedTextKeyboard)
-                                .onSubmit {
-                                    toggleIsEditingPresentedText()
-                                }
-                        } else {
-                            Text(dbAnimation.presentedText)
-                        }
-                        Button {
-                            toggleIsEditingPresentedText()
-                        } label: {
-                            Image(systemName: (isEditingPresentedText || isJustEditingPresentedText) ? "checkmark" : "pencil")
-                        }
-                        
-                    }
-                }
-                
-                if !isEditingPresentedText {
-                    Button("Try Animation") {
-                        isAdjustingSpeed = false
-                        isEditingPresentedTextKeyboard = false
-                        withAnimation(runAnimation) {
-                            isShowing.toggle()
-                        }
-                    }
-                    .buttonBorderShape(.roundedRectangle)
-                    
-                    HStack {
-                        Text("Animation Speed: ")
-                        TextField("", text: speedBinding, prompt: Text("Default"))
-#if os(iOS)
-                            .keyboardType(.decimalPad)
-#endif
-                            .focused($isAdjustingSpeed)
-                            .textFieldStyle(.roundedBorder)
-                    }
-                }
-            }
-            
-            if !isEditingPresentedText {
-                Section("Code") {
-                    Text(code)
-                        .overlay(alignment: .topTrailing) {
+        ScrollView {
+            VStack {
+                VStack {
+                    if isShowing {
+                        HStack {
+                            if isEditingPresentedText || isJustEditingPresentedText {
+                                TextField("", text: $dbAnimation.presentedText, prompt: Text("Presented Text"))
+                                    .focused($isEditingPresentedTextKeyboard)
+                                    .onSubmit {
+                                        toggleIsEditingPresentedText()
+                                    }
+                            } else {
+                                Text(dbAnimation.presentedText)
+                            }
                             Button {
-#if os(iOS)
-                                UIPasteboard.general.string = code
-#endif
-#if os(macOS)
-                                let pasteboard = NSPasteboard.general
-                                pasteboard.declareTypes([.string], owner: nil)
-                                pasteboard.setString(code, forType: .string)
-#endif
+                                toggleIsEditingPresentedText()
                             } label: {
-                                Image(systemName: "doc.on.clipboard")
+                                Image(systemName: (isEditingPresentedText || isJustEditingPresentedText) ? "checkmark" : "pencil")
                             }
                             
                         }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                    if !isEditingPresentedText {
+                        if isShowing {
+                            Divider()
+                        }
+                        Button {
+                            isAdjustingSpeed = false
+                            isEditingPresentedTextKeyboard = false
+                            withAnimation(runAnimation) {
+                                isShowing.toggle()
+                            }
+                        } label: {
+                            Text("Try Animation")
+                            Spacer()
+                        }
+                        .buttonBorderShape(.roundedRectangle)
+                        Divider()
+                        
+                        HStack {
+                            Text("Animation Speed: ")
+                            TextField("", text: speedBinding, prompt: Text("Default"))
+#if os(iOS)
+                                .keyboardType(.decimalPad)
+#endif
+                                .focused($isAdjustingSpeed)
+                                .textFieldStyle(.roundedBorder)
+                        }
+                    }
+                }
+                .padding()
+                .background(Color.white)
+                .clipShape(RoundedRectangle(cornerRadius: 12.5))
+                #if canImport(UIKit)
+                .padding(UIDevice.current.userInterfaceIdiom == .phone ? [] : [.top])
+                #elseif canImport(AppKit)
+                .padding(.top)
+                #endif
+                
+                if !isEditingPresentedText {
+                    DisclosureGroup {
+                        VStack {
+                            Text(code)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .overlay(alignment: .topTrailing) {
+                                    Button {
+    #if os(iOS)
+                                        UIPasteboard.general.string = code
+    #endif
+    #if os(macOS)
+                                        let pasteboard = NSPasteboard.general
+                                        pasteboard.declareTypes([.string], owner: nil)
+                                        pasteboard.setString(code, forType: .string)
+    #endif
+                                    } label: {
+                                        Image(systemName: "doc.on.clipboard")
+                                    }
+                                    
+                                }
+                        }
+                        .padding()
+                        .background(Color.white)
+                        .clipShape(RoundedRectangle(cornerRadius: 12.5))
+                    } label: {
+                        Text("Code")
+                            .font(.subheadline)
+                            .foregroundStyle(Color.secondary)
+                            .bold()
+                    }
+                    .padding(.top, 15)
+                    .padding(.bottom)
                 }
             }
         }
+        .scrollContentBackground(.hidden)
         .toolbar(content: {
             ToolbarItem(placement: .keyboard) {
                 HStack {
@@ -146,13 +177,21 @@ struct AnimationView: View {
             }
         })
         .navigationTitle(dbAnimation.title)
-        #if os(iOS)
-        .navigationBarTitleDisplayMode(.large)
-        #endif
         .onChange(of: dbAnimation) {
             isShowing = false
         }
-//        .padding()
+        
+        #if os(iOS)
+        .navigationBarTitleDisplayMode(.large)
+        #endif
+        .padding(.horizontal)
+        
+        #if canImport(UIKit)
+        .frame(maxHeight: UIDevice.current.userInterfaceIdiom == .phone ? .infinity : nil)
+        .background(Color(uiColor: .secondarySystemBackground))
+        #elseif canImport(AppKit)
+        .background(Color(nsColor: .secondarySystemFill))
+        #endif
     }
     
     
@@ -220,69 +259,98 @@ struct ContentView: View {
     }
     
     var body: some View {
-        List {
-            Section {
-                if isShowing {
-                    HStack {
-                        if isEditingPresentedText || isJustEditingPresentedText {
-                            TextField("", text: $presentedText, prompt: Text("Presented Text"))
-                                .focused($isEditingPresentedTextKeyboard)
-                                .onSubmit {
-                                    toggleIsEditingPresentedText()
+        NavigationStack {
+            ScrollView {
+                VStack {
+                    VStack {
+                        if isShowing {
+                            HStack {
+                                if isEditingPresentedText || isJustEditingPresentedText {
+                                    TextField("", text: $presentedText, prompt: Text("Presented Text"))
+                                        .focused($isEditingPresentedTextKeyboard)
+                                        .onSubmit {
+                                            toggleIsEditingPresentedText()
+                                        }
+                                } else {
+                                    Text(presentedText)
                                 }
-                        } else {
-                            Text(presentedText)
+                                Button {
+                                    toggleIsEditingPresentedText()
+                                } label: {
+                                    Image(systemName: (isEditingPresentedText || isJustEditingPresentedText) ? "checkmark" : "pencil")
+                                }
+                                
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
                         }
-                        Button {
-                            toggleIsEditingPresentedText()
-                        } label: {
-                            Image(systemName: (isEditingPresentedText || isJustEditingPresentedText) ? "checkmark" : "pencil")
+                        if !isEditingPresentedText {
+                            if isShowing {
+                                Divider()
+                            }
+                            Button {
+                                isAdjustingSpeed = false
+                                isEditingPresentedTextKeyboard = false
+                                withAnimation(runAnimation) {
+                                    isShowing.toggle()
+                                }
+                            } label: {
+                                Text("Try Animation")
+                                Spacer()
+                            }
+                            .buttonBorderShape(.roundedRectangle)
+                            Divider()
+                            
+                            HStack {
+                                Text("Animation Speed: ")
+                                TextField("", text: speedBinding, prompt: Text("Default"))
+    #if os(iOS)
+                                    .keyboardType(.decimalPad)
+    #endif
+                                    .focused($isAdjustingSpeed)
+                                    .textFieldStyle(.roundedBorder)
+                            }
                         }
-                        
                     }
+                    .padding()
+                    .background(Color.white)
+                    .clipShape(RoundedRectangle(cornerRadius: 12.5))
+                    #if canImport(UIKit)
+                    .padding(UIDevice.current.userInterfaceIdiom == .phone ? [] : [.top])
+                    #elseif canImport(AppKit)
+                    .padding(.top)
+                    #endif
                 }
-                
-                if !isEditingPresentedText {
-                    Button("Try Animation") {
-                        isAdjustingSpeed = false
-                        isEditingPresentedTextKeyboard = false
-                        withAnimation(runAnimation) {
-                            isShowing.toggle()
-                        }
-                    }
-                    .buttonBorderShape(.roundedRectangle)
-                    
+            }
+            .scrollContentBackground(.hidden)
+            .toolbar(content: {
+                ToolbarItem(placement: .keyboard) {
                     HStack {
-                        Text("Animation Speed: ")
-                        TextField("", text: speedBinding, prompt: Text("Default"))
-#if os(iOS)
-                            .keyboardType(.decimalPad)
-#endif
-                            .focused($isAdjustingSpeed)
-                            .textFieldStyle(.roundedBorder)
-                    }
-                }
-            }
-        }
-        .toolbar(content: {
-            ToolbarItem(placement: .keyboard) {
-                HStack {
-                    Spacer()
-                    Button("Done") {
-                        isEditingPresentedTextKeyboard = false
-                        isAdjustingSpeed = false
-                        withAnimation(runAnimation) {
-                            isEditingPresentedText = false
-                            isJustEditingPresentedText = false
+                        Spacer()
+                        Button("Done") {
+                            isEditingPresentedTextKeyboard = false
+                            isAdjustingSpeed = false
+                            withAnimation(runAnimation) {
+                                isEditingPresentedText = false
+                                isJustEditingPresentedText = false
+                            }
                         }
                     }
                 }
-            }
-        })
-        .navigationTitle("\(dbAnimation.title)")
-        #if os(iOS)
-        .navigationBarTitleDisplayMode(.large)
-        #endif
+            })
+            .navigationTitle("\(dbAnimation.title)")
+            
+            #if os(iOS)
+            .navigationBarTitleDisplayMode(.large)
+            #endif
+            .padding(.horizontal)
+            
+            #if canImport(UIKit)
+            .frame(maxHeight: UIDevice.current.userInterfaceIdiom == .phone ? .infinity : nil)
+            .background(Color(uiColor: .secondarySystemBackground))
+            #elseif canImport(AppKit)
+            .background(Color(nsColor: .secondarySystemFill))
+            #endif
+        }
     }
 }
 """
