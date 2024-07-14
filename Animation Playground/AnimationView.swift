@@ -15,6 +15,39 @@ struct AnimationView: View {
     @State var isJustEditingPresentedText = false
     @FocusState var isEditingPresentedTextKeyboard
     @FocusState var isAdjustingSpeed
+    @Environment(\.colorScheme) var colorScheme
+    
+    // Section Backround
+    var animationViewCellBackground: Color {
+        #if canImport(UIKit)
+        switch colorScheme {
+        case .light:
+            return Color(uiColor: .systemBackground)
+        case .dark:
+            return Color(uiColor: .secondarySystemBackground)
+        @unknown default:
+            return Color(uiColor: .systemBackground)
+        }
+        #elseif canImport(AppKit)
+        return Color(nsColor: .systemFill)
+        #endif
+    }
+    
+    // View Background
+    var animationViewBackground: Color {
+        #if canImport(UIKit)
+        switch colorScheme {
+        case .light:
+            return Color(uiColor: .secondarySystemBackground)
+        case .dark:
+            return Color(uiColor: .systemBackground)
+        @unknown default:
+            return Color(uiColor: .secondarySystemBackground)
+        }
+        #elseif canImport(AppKit)
+        return Color.clear
+        #endif
+    }
     
     var speedBinding: Binding<String> {
         Binding {
@@ -117,7 +150,7 @@ struct AnimationView: View {
                     }
                 }
                 .padding()
-                .background(Color.white)
+                .background(animationViewCellBackground)
                 .clipShape(RoundedRectangle(cornerRadius: 12.5))
                 #if canImport(UIKit)
                 .padding(UIDevice.current.userInterfaceIdiom == .phone ? [] : [.top])
@@ -147,7 +180,7 @@ struct AnimationView: View {
                                 }
                         }
                         .padding()
-                        .background(Color.white)
+                        .background(animationViewCellBackground)
                         .clipShape(RoundedRectangle(cornerRadius: 12.5))
                     } label: {
                         Text("Code")
@@ -188,10 +221,8 @@ struct AnimationView: View {
         
         #if canImport(UIKit)
         .frame(maxHeight: UIDevice.current.userInterfaceIdiom == .phone ? .infinity : nil)
-        .background(Color(uiColor: .secondarySystemBackground))
-        #elseif canImport(AppKit)
-        .background(Color(nsColor: .secondarySystemFill))
         #endif
+        .background(animationViewBackground)
     }
     
     
@@ -209,6 +240,39 @@ struct ContentView: View {
     @FocusState var isEditingPresentedTextKeyboard
     @FocusState var isAdjustingSpeed
     @State var speed: Double?
+    @Environment(\\.colorScheme) var colorScheme
+        
+    // Section Backround
+    var animationViewCellBackground: Color {
+        #if canImport(UIKit)
+        switch colorScheme {
+        case .light:
+            return Color(uiColor: .systemBackground)
+        case .dark:
+            return Color(uiColor: .secondarySystemBackground)
+        @unknown default:
+            return Color(uiColor: .systemBackground)
+        }
+        #elseif canImport(AppKit)
+        return Color(nsColor: .systemFill)
+        #endif
+    }
+    
+    // View Background
+    var animationViewBackground: Color {
+        #if canImport(UIKit)
+        switch colorScheme {
+        case .light:
+            return Color(uiColor: .secondarySystemBackground)
+        case .dark:
+            return Color(uiColor: .systemBackground)
+        @unknown default:
+            return Color(uiColor: .secondarySystemBackground)
+        }
+        #elseif canImport(AppKit)
+        return Color.clear
+        #endif
+    }
     
     var speedBinding: Binding<String> {
         Binding {
@@ -312,7 +376,7 @@ struct ContentView: View {
                         }
                     }
                     .padding()
-                    .background(Color.white)
+                    .background(animationViewCellBackground)
                     .clipShape(RoundedRectangle(cornerRadius: 12.5))
                     #if canImport(UIKit)
                     .padding(UIDevice.current.userInterfaceIdiom == .phone ? [] : [.top])
@@ -346,10 +410,8 @@ struct ContentView: View {
             
             #if canImport(UIKit)
             .frame(maxHeight: UIDevice.current.userInterfaceIdiom == .phone ? .infinity : nil)
-            .background(Color(uiColor: .secondarySystemBackground))
-            #elseif canImport(AppKit)
-            .background(Color(nsColor: .secondarySystemFill))
             #endif
+            .background(animationViewBackground)
         }
     }
 }
